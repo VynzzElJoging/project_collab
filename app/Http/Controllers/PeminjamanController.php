@@ -81,6 +81,8 @@ class PeminjamanController extends Controller
                 'exists:books,id',
             ],
         ], [
+            'anggota.required' => 'Harus memilih anggota',
+
             'books.max' =>
             'Maksimal ' . self::MAKSIMAL_BUKU . ' buku dalam satu transaksi.',
 

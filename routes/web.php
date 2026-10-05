@@ -6,6 +6,7 @@ use App\Http\Controllers\DataManagementController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -62,9 +63,20 @@ Route::middleware(['auth', 'admin', 'data.management'])
             'kembalikan'
         ])->name('admin.data.peminjaman.kembalikan');
 
-        Route::get('/laporan', function () {
-            return view('admin.data.laporan');
-        })->name('admin.data.laporan');
+        Route::get('/laporan', [
+            LaporanController::class,
+            'index'
+        ])->name('admin.data.laporan');
+
+        Route::get('/laporan/pdf', [
+            LaporanController::class,
+            'exportPdf'
+        ])->name('admin.data.laporan.pdf');
+
+        Route::get('/laporan/excel', [
+            LaporanController::class,
+            'exportExcel'
+        ])->name('admin.data.laporan.excel');
     });
 
 // ROUTE GUEST -> JANG USER ANU ROLE NA GUEST
