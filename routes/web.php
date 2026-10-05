@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DataManagementController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AnggotaController;
+use App\Http\Controllers\PeminjamanController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -49,12 +50,17 @@ Route::middleware(['auth', 'admin', 'data.management'])
             ->names('admin.data.buku');
 
         Route::resource('/anggota', AnggotaController::class)
-    ->except(['show'])
-    ->names('admin.data.anggota');
+            ->except(['show'])
+            ->names('admin.data.anggota');
 
-        Route::get('/peminjaman', function () {
-            return view('admin.data.peminjaman');
-        })->name('admin.data.peminjaman');
+        Route::resource('/peminjaman', PeminjamanController::class)
+            ->only(['index', 'create', 'store'])
+            ->names('admin.data.peminjaman');
+
+        Route::patch('/peminjaman/{peminjaman}/kembalikan', [
+            PeminjamanController::class,
+            'kembalikan'
+        ])->name('admin.data.peminjaman.kembalikan');
 
         Route::get('/laporan', function () {
             return view('admin.data.laporan');
@@ -96,7 +102,6 @@ Route::post('/guest/profile', function (Illuminate\Http\Request $request) {
         'success',
         'Data profile berhasil disimpan.'
     );
-
 })->middleware('auth')->name('guest.profile.update');
 Route::post('/guest/profile/foto', function (Illuminate\Http\Request $request) {
 
@@ -115,7 +120,6 @@ Route::post('/guest/profile/foto', function (Illuminate\Http\Request $request) {
     }
 
     return back();
-
 })->middleware('auth')->name('guest.profile.foto');
 // ROUTE LOGOUT
 Route::post('/logout', [AuthController::class, 'logout'])
