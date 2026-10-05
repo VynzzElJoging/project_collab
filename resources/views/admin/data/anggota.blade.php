@@ -88,34 +88,6 @@
                     </div>
 
 
-                    {{-- SORTING --}}
-                    <select
-                        name="sort"
-                        class="border-2 border-black bg-white px-4 py-3 text-sm text-black outline-none transition-all duration-300 focus:bg-gray-50 focus:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-
-                        <option value="nama_asc"
-                            {{ ($urutkeun ?? 'nama_asc') === 'nama_asc' ? 'selected' : '' }}>
-                            Nama A → Z
-                        </option>
-
-                        <option value="nama_desc"
-                            {{ ($urutkeun ?? 'nama_asc') === 'nama_desc' ? 'selected' : '' }}>
-                            Nama Z → A
-                        </option>
-
-                        <option value="tanggal_lahir_asc"
-                            {{ ($urutkeun ?? 'nama_asc') === 'tanggal_lahir_asc' ? 'selected' : '' }}>
-                            Tanggal Lahir Lama → Baru
-                        </option>
-
-                        <option value="tanggal_lahir_desc"
-                            {{ ($urutkeun ?? 'nama_asc') === 'tanggal_lahir_desc' ? 'selected' : '' }}>
-                            Tanggal Lahir Baru → Lama
-                        </option>
-
-                    </select>
-
-
                     {{-- TOMBOL CARI --}}
                     <button
                         type="submit"
@@ -174,28 +146,35 @@
                     {{-- CARD ANGGOTA --}}
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 
-                        @foreach ($anggotas as $anggota)
+                      @foreach ($anggotas as $anggota)
 
-                            <div
-                                class="group cursor-pointer overflow-hidden rounded-xl bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl active:scale-[0.98]">
+    <div
+        class="group cursor-pointer overflow-hidden rounded-xl bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl active:scale-[0.98]">
 
-                                {{-- HEADER CARD --}}
-                                <div class="bg-black px-5 py-6 text-white">
+        {{-- HEADER CARD --}}
+        <div class="bg-black px-5 py-6 text-white">
 
-                                    <div class="flex h-16 w-16 items-center justify-center rounded-full bg-white text-2xl text-black">
-                                        👤
-                                    </div>
+            <div class="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-white text-2xl text-black">
+                @if ($anggota->foto)
+                    <img
+                        src="{{ asset('storage/' . $anggota->foto) }}"
+                        alt="Foto {{ $anggota->nama }}"
+                        class="h-full w-full object-cover"
+                    >
+                @else
+                    👤
+                @endif
+            </div>
 
-                                    <h2 class="mt-4 text-xl font-semibold tracking-wide">
-                                        {{ $anggota->nama }}
-                                    </h2>
+            <h2 class="mt-4 text-xl font-semibold tracking-wide">
+                {{ $anggota->nama }}
+            </h2>
 
-                                    <p class="mt-1 text-sm text-gray-300">
-                                        {{ $anggota->email ?? 'Email belum tersedia' }}
-                                    </p>
+            <p class="mt-1 text-sm text-gray-300">
+                {{ $anggota->email ?? 'Email belum tersedia' }}
+            </p>
 
-                                </div>
-
+        </div>
 
                                 {{-- INFORMASI ANGGOTA --}}
                                 <div class="p-5">

@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DataManagementController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AnggotaController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('landing');
@@ -62,11 +63,60 @@ Route::middleware(['auth', 'admin', 'data.management'])
 
 // ROUTE GUEST -> JANG USER ANU ROLE NA GUEST
 Route::get('/guest/home', function () {
-    return view('guest.home');
+    $books = \App\Models\Book::all();
+
+    return view('guest.home', compact('books'));
 })
     ->middleware(['auth', 'guest.role'])
     ->name('guest.home');
+Route::get('/guest/profile', function () {
+    return view('guest.profile');
+})->middleware('auth')->name('guest.profile');
 
+Route::post('/guest/profile', function (Illuminate\Http\Request $request) {
+
+    $validated = $request->validate([
+        'nama' => 'required|string|max:100',
+        'email' => 'required|email|max:100',
+        'tanggal_lahir' => 'required|date',
+        'jenis_kelamin' => 'required|string',
+        'alamat' => 'required|string|max:255',
+        'no_hp' => 'required|string|max:20',
+    ]);
+
+    $anggota = Auth::user()->anggota;
+
+    if (!$anggota) {
+        $anggota = Auth::user()->anggota()->create($validated);
+    } else {
+        $anggota->update($validated);
+    }
+
+    return redirect()->route('guest.home')->with(
+        'success',
+        'Data profile berhasil disimpan.'
+    );
+
+})->middleware('auth')->name('guest.profile.update');
+Route::post('/guest/profile/foto', function (Illuminate\Http\Request $request) {
+
+    $request->validate([
+        'foto' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+    ]);
+
+    $anggota = Auth::user()->anggota;
+
+    if ($request->hasFile('foto')) {
+
+        $path = $request->file('foto')->store('foto-anggota', 'public');
+
+        $anggota->foto = $path;
+        $anggota->save();
+    }
+
+    return back();
+
+})->middleware('auth')->name('guest.profile.foto');
 // ROUTE LOGOUT
 Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')

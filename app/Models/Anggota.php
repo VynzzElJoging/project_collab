@@ -15,6 +15,7 @@ class Anggota extends Model
         'jenis_kelamin',
         'alamat',
         'no_hp',
+        'foto',
     ];
 
     public function user()

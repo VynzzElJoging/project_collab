@@ -9,6 +9,13 @@ class AnggotaController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+
+    //Index = mengambil dan menampilkan data anggota.
+    //"Method index digunakan untuk menampilkan data anggota. 
+    //Data pencarian diambil dari request, kemudian query dibuat menggunakan model Anggota. 
+    //Jika ada pencarian, sistem mencari berdasarkan nama, email, atau jenis kelamin. 
+    //Setelah itu get() mengambil hasil dari database dan datanya dikirim ke view admin.data.anggota."
    public function index(Request $request)
 {
     $neanganDataAnggota = $request->search;
@@ -42,6 +49,15 @@ class AnggotaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+
+    /**
+     * "Pertama method create() menampilkan form tambah anggota. 
+     * Setelah form dikirim, method store() menerima data tersebut. 
+     * Data divalidasi terlebih dahulu, kemudian jika ada foto maka foto disimpan ke storage. 
+     * Setelah itu data dibersihkan menggunakan trim() dan disimpan ke database menggunakan Anggota::create(). 
+     * Setelah berhasil, sistem mengarahkan kembali ke halaman data anggota dengan pesan berhasil."
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -51,7 +67,12 @@ class AnggotaController extends Controller
         'jenis_kelamin' => 'nullable|string|max:50',
         'alamat' => 'nullable|string',
         'no_hp' => 'nullable|string|max:20',
+        'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
     ]);
+
+    if ($request->hasFile('foto')) {
+    $validated['foto'] = $request->file('foto')->store('anggota', 'public');
+}
 
     $validated['nama'] = trim($validated['nama']);
 
@@ -96,19 +117,22 @@ class AnggotaController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $validated = $request->validate([
+{
+    $validated = $request->validate([
         'nama' => 'required|string|max:255',
         'email' => 'nullable|email|max:255',
         'tanggal_lahir' => 'nullable|date',
         'jenis_kelamin' => 'nullable|string|max:50',
         'alamat' => 'nullable|string',
         'no_hp' => 'nullable|string|max:20',
+        'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
     ]);
 
     $anggota = Anggota::findOrFail($id);
 
-    $validated['nama'] = trim($validated['nama']);
+    if ($request->hasFile('foto')) {
+        $validated['foto'] = $request->file('foto')->store('anggota', 'public');
+    }
 
     if (isset($validated['email'])) {
         $validated['email'] = trim($validated['email']);

@@ -36,7 +36,6 @@
             <form action="{{ url('/register') }}" method="POST" class="space-y-5">
 
                 @csrf
-
                 {{-- Username --}}
                 <div>
 

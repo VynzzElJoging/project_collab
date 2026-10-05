@@ -153,7 +153,7 @@
 
         <div class="form-card">
 
-            <form action="{{ route('admin.data.anggota.store') }}" method="POST">
+            <form action="{{ route('admin.data.anggota.store') }}" method="POST" enctype="multipart/form-data">
 
                 @csrf
 
@@ -232,6 +232,17 @@
                         placeholder="Masukkan nomor HP"
                     >
                 </div>
+
+                <div class="form-group">
+    <label for="foto">Foto Anggota</label>
+
+    <input
+        type="file"
+        id="foto"   
+        name="foto"
+        accept="image/*"
+    >
+</div>
 
                 <div class="buttons">
 

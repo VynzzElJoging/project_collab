@@ -127,7 +127,7 @@
 
         <div class="form-card">
 
-            <form action="{{ route('admin.data.anggota.update', $anggota) }}" method="POST">
+            <form action="{{ route('admin.data.anggota.update', $anggota) }}" method="POST" enctype="multipart/form-data">
 
                 @csrf
                 @method('PUT')
@@ -206,6 +206,15 @@
                     >
                 </div>
 
+               <div class="form-group">
+                <label for="foto">Foto Anggota</label>
+                <input
+        type="file"
+        id="foto"   
+        name="foto"
+        accept="image/*"
+    >
+               </div>
                 <div class="buttons">
 
                     <button type="submit" class="btn btn-simpan">
