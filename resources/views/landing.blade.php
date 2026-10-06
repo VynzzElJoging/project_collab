@@ -18,7 +18,7 @@
         <div class="rounded-2xl border border-gray-200 bg-white p-10 text-center shadow-xl shadow-gray-200/50">
 
             <h1 class="mb-10 text-5xl font-smooch font-bold tracking-wide text-gray-950">
-                WELCOME TO MY WEBSITE
+                WELCOME 
             </h1>
 
             <div class="flex items-center justify-center gap-4">
