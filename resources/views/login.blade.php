@@ -18,7 +18,7 @@
         <div class="text-center mb-8">
 
             <h1 class="text-5xl font-bold font-smooch text-gray-950">
-                Wilujeung Uih Deui
+                Wilujeung 
             </h1>
 
             <p class="text-gray-500 mt-2">
